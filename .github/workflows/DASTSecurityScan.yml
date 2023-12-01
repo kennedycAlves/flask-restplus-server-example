@@ -18,8 +18,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t Dockerfile:latest -f .
-
+          docker build -t image:latest -f Dockerfile .
+      
       - name: Run OWASP ZAP for DAST
         run: |
           docker run --rm \
