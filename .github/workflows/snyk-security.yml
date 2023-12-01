@@ -1,12 +1,6 @@
 name: Snyk Security Scan
 
-on:
-  push:
-    branches:
-      - "master"
-  pull_request:
-    branches:
-      - "master"
+on: [push]
 
 jobs:
   security:
@@ -26,13 +20,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Install Snyk
+        run: |
+          npm install -g snyk
+
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python-3.8@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: test --file=requirements.txt --json --print-all
-
-      - name: Display Snyk output
         run: |
-          cat snyk-output.json
+          snyk auth $SNYK_TOKEN
+          snyk test --file=requirements.txt
+
+      - name: Run Flask tests
+        run: |
+          python -m unittest discover -s tests
