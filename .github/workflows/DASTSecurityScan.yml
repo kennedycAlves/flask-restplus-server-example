@@ -3,10 +3,10 @@ name: DAST Security Scan
 on:
   push:
     branches:
-      - "master"
+      - "main"
   pull_request:
     branches:
-      - "master"
+      - "main"
 
 jobs:
   security:
@@ -18,7 +18,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t Dockerfile:latest .
+          docker build -t my-docker-image:latest -f flask-restplus-server-example/Dockerfile .
 
       - name: Run OWASP ZAP for DAST
         run: |
