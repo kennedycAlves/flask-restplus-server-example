@@ -35,12 +35,20 @@ jobs:
         run: |
           npm install -g snyk
 
+      - name: Authenticate with Snyk
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          if ! snyk auth $SNYK_TOKEN; then
+            echo "Failed to authenticate with Snyk. Please check your token."
+            exit 1
+          fi
+
       - name: Run Snyk to check for vulnerabilities
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
-          snyk auth $SNYK_TOKEN
-          snyk test --file=requirements.txt --json > snyk-output.json
+          snyk test --file=requirements.txt --json --print-all > snyk-output.json
 
       - name: Display Snyk output
         run: |
