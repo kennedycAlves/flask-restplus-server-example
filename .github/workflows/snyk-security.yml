@@ -2,7 +2,7 @@ name: Snyk Security Scan and Fix
 
 on:
   push:
-    branches: ["main"]
+    branches: ["master"]
 
 jobs:
   security:
