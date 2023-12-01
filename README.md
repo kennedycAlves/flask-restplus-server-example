@@ -9,11 +9,11 @@ Snyk é uma ferramenta de segurança que analisa dependências do projeto em bus
 Como funciona:
 
 A cada push ou pull request, a pipeline executa verificações de segurança usando o Snyk.
-As vulnerabilidades são apresentadas no painel do Snyk e, se necessário, são automaticamente corrigidas usando o comando snyk wizard.
+As vulnerabilidades são apresentadas no painel do Snyk.
 Configuração:
 
 É necessário configurar as variáveis de ambiente, incluindo o token do Snyk, no ambiente de execução da pipeline.
-2. OWASP ZAP (Dynamic Application Security Testing - DAST)
+2. OWASP ZAP (Dynamic Application Security Testing - DAST) 
 OWASP Zed Attack Proxy (ZAP) é utilizado para testes de segurança dinâmica, analisando a aplicação enquanto ela está em execução.
 
 Como funciona:
