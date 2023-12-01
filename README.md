@@ -20,5 +20,6 @@ Durante a pipeline, uma imagem Docker é construída e executada para a aplicaç
 O ZAP conduz varreduras de segurança na aplicação, identificando potenciais vulnerabilidades.
 Relatórios de segurança são gerados e armazenados como artefatos valiosos.
 
+path: .github/workflows
 
 
