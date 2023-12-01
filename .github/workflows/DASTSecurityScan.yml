@@ -1,0 +1,34 @@
+name: DAST Security Scan
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t my-docker-image:latest .
+
+      - name: Run OWASP ZAP for DAST
+        run: |
+          docker run --rm \
+            --network host \
+            -e API_URL=http://localhost:3000 \  # Replace with your application URL
+            owasp/zap2docker-stable zap-baseline.py -t http://localhost:3000 -g gen.conf -r report.html
+
+      - name: Upload ZAP Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: zap-reports
+          path: report.html
