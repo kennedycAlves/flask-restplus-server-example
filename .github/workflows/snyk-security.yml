@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: ["master"]
 
-permissions:
-  contents: read
-
-
 jobs:
   security:
     runs-on: ubuntu-latest
@@ -32,12 +28,34 @@ jobs:
         run: |
           npm install -g snyk
 
+      - name: Install jq
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
       - name: Run Snyk to check for vulnerabilities
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
           snyk auth $SNYK_TOKEN
-          snyk test --file=requirements.txt
+          snyk_output=$(snyk test --file=requirements.txt --json)
+
+          # Check if there are vulnerabilities
+          if [[ $snyk_output == *"vulnerabilities"* ]]; then
+            echo "Vulnerabilities found. Creating GitHub issue..."
+            
+            # Extract relevant information from the Snyk output
+            vulnerabilities=$(echo $snyk_output | jq -r '.vulnerabilities')
+
+            # Create a GitHub issue
+            curl -X POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
+              https://api.github.com/repos/${{ github.repository }}/issues \
+              -d "{\"title\":\"Security Vulnerabilities Found\",\"body\":\"$vulnerabilities\",\"labels\":[\"security\"]}"
+          else
+            echo "No vulnerabilities found."
+          fi
 
       - name: Run Flask tests
         run: |
