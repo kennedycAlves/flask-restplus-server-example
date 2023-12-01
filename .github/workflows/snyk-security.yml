@@ -1,46 +1,11 @@
-name: Snyk Security Scan and Fix
-
-on:
-  push:
-    branches: ["master"]
-
+name: Example workflow for Python-3.8 using Snyk
+on: push
 jobs:
   security:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14
-
-      - name: Install dependencies
-        run: |
-          npm install -g snyk
-
+      - uses: actions/checkout@master
       - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python-3.8@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: |
-          snyk auth $SNYK_TOKEN
-          snyk test --file=requirements.txt --all-projects --json > snyk-output.json
-
-      - name: Attempt to fix vulnerabilities
-        run: |
-          snyk fix --file=requirements.txt --all-projects --json -o snyk-fix-output.json
-
-      - name: Display Snyk fix output
-        run: |
-          cat snyk-fix-output.json
-
-      - name: Commit and push fixes
-        if: success()
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git commit -m "Fix vulnerabilities suggested by Snyk"
-          git push
