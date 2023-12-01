@@ -18,7 +18,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t my-docker-image:latest -f flask-restplus-server-example/Dockerfile .
+          docker build -t Dockerfile:latest -f .
 
       - name: Run OWASP ZAP for DAST
         run: |
