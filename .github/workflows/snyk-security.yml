@@ -26,20 +26,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Install Node.js and npm
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14
-
-      - name: Install Snyk
-        run: |
-          npm install -g snyk
-
       - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python-3.8@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: |
-          snyk test --file=requirements.txt --json --print-all --token=$SNYK_TOKEN > snyk-output.json
+        with:
+          args: test --file=requirements.txt --json --print-all
 
       - name: Display Snyk output
         run: |
