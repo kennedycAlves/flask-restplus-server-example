@@ -9,7 +9,9 @@ Snyk é uma ferramenta de segurança especializada na análise de dependências 
 Como Funciona:
 A cada push ou pull request, a pipeline realiza verificações de segurança usando o Snyk.
 As vulnerabilidades são apresentadas no painel do Snyk, proporcionando uma visão clara do estado da segurança.
-Configuração:
+
+![image](https://github.com/kennedycAlves/flask-restplus-server-example/assets/41455653/682ef4be-63f9-471b-a5a0-216de420a665)
+
 
 
 2. OWASP ZAP (Dynamic Application Security Testing - DAST) (Não está funcionando por conta de problemas na imagem Docker)
